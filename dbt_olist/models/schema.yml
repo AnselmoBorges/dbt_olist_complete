@@ -1,0 +1,239 @@
+version: 2
+
+seeds:
+  - name: orders
+    description: "Tabela bruta com dados de pedidos."
+    columns:
+      - name: order_id
+        description: "ID único do pedido."
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "ID do cliente, relaciona com a tabela 'customers'."
+      - name: order_status
+        description: "Status do pedido (delivered, shipped, canceled, etc.)."
+      - name: order_purchase_timestamp
+        description: "Data/hora em que o pedido foi realizado."
+      - name: order_approved_at
+        description: "Data/hora em que o pagamento foi aprovado."
+      - name: order_delivered_carrier_date
+        description: "Data/hora de envio do produto ao transportador."
+      - name: order_delivered_customer_date
+        description: "Data de entrega ao cliente."    
+      - name: order_estimated_delivery_date
+        description: "Data de entrega estimada."      
+
+  - name: customers
+    description: "Tabela bruta com dados de clientes."
+    columns:
+      - name: customer_id
+        description: "ID do cliente, relaciona com a tabela 'orders'."
+        tests:
+          - not_null
+      - name: customer_unique_id
+        description: "Identificador único do cliente (chave natural)."
+      - name: customer_zip_code_prefix
+        description: "Primeiros 5 dígitos do CEP."       
+      - name: customer_city
+        description: "Cidade do cliente."       
+      - name: customer_state
+        description: "Estado (UF) do cliente."       
+
+  - name: order_items
+    description: "Tabela bruta com itens de cada pedido (produtos, frete, etc.)."
+    columns:
+      - name: order_id
+        description: "Relaciona com 'orders'."
+        tests:
+          - not_null
+      - name: product_id
+        description: "Relaciona com a tabela 'products'."
+      - name: seller_id
+        description: "Relaciona com a tabela 'sellers'."
+      - name: price
+        description: "Preço do item."
+      - name: freight_value
+        description: "Valor do frete."        
+
+  - name: order_payments
+    description: "Tabela bruta com informações de pagamento de cada pedido."
+    columns:
+      - name: order_id
+        description: "Relaciona com 'orders'."
+        tests:
+          - not_null
+      - name: payment_type
+        description: "Tipo de pagamento (cartão, boleto, etc.)."        
+      - name: payment_installments
+        description: "Número de parcelas."        
+      - name: payment_value
+        description: "Valor total pago."        
+
+  - name: order_reviews
+    description: "Tabela bruta com avaliações de pedidos pelos clientes."
+    columns:
+      - name: review_id
+        description: "ID único da avaliação."
+        tests:
+          - unique
+      - name: order_id
+        description: "Relaciona com 'orders'."
+      - name: review_score
+        description: "Nota dada pelo cliente (1 a 5)."
+      - name: review_comment_message
+        description: "Comentário (texto livre)."
+      - name: review_creation_date
+        description: "Data da criação da avaliação."        
+
+  - name: products
+    description: "Tabela bruta com dados dos produtos ofertados."
+    columns:
+      - name: product_id
+        description: "ID único do produto."
+        tests:
+          - not_null
+          - unique
+      - name: product_category_name
+        description: "Categoria do produto."        
+      - name: product_weight_g
+        description: "Peso do produto em gramas."        
+      - name: product_length_cm
+        description: "Comprimento do produto em cm."        
+      - name: product_height_cm
+        description: "Altura do produto em cm."        
+      - name: product_width_cm
+        description: "Largura do produto em cm."        
+
+  - name: sellers
+    description: "Tabela bruta com dados dos vendedores."
+    columns:
+      - name: seller_id
+        description: "ID do vendedor, relaciona com 'order_items'."
+        tests:
+          - not_null
+          - unique
+      - name: seller_zip_code_prefix
+        description: "CEP do vendedor."        
+      - name: seller_city
+        description: "Cidade do vendedor."        
+      - name: seller_state
+        description: "Estado (UF) do vendedor."        
+
+  - name: geolocation
+    description: "Tabela bruta de geolocalização de CEPs no Brasil."
+    columns:
+      - name: geolocation_zip_code_prefix
+        description: "CEP parcial (5 dígitos)."
+      - name: geolocation_lat
+        description: "Latitude."        
+      - name: geolocation_lng
+        description: "Longitude."        
+      - name: geolocation_city
+        description: "Cidade."        
+      - name: geolocation_state
+        description: "Estado (UF)."        
+
+  - name: product_category_translation
+    description: "Tabela que traduz as categorias de produtos para inglês."
+    columns:
+      - name: product_category_name
+        description: "Nome da categoria em português (abreviado)."
+      - name: product_category_name_english
+        description: "Nome da categoria em inglês."        
+
+
+  - name: core_orders
+    description: "Modelo core unindo dados de pedidos, pagamentos e avaliações."
+    columns:
+      - name: order_id
+        description: "ID único do pedido."
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "ID do cliente (chave estrangeira)."
+        tests:
+          - not_null
+      - name: order_status
+        description: "Status do pedido (shipped, delivered, canceled, etc.)."
+      - name: order_purchase_timestamp
+        description: "Data/hora em que o pedido foi realizado."
+      - name: order_delivered_customer_date
+        description: "Data/hora em que o cliente recebeu o pedido."
+      - name: payment_type
+        description: "Forma de pagamento (cartão, boleto, etc.)."
+      - name: payment_value
+        description: "Valor total pago."
+      - name: payment_installments
+        description: "Número de parcelas."
+      - name: review_score
+        description: "Nota de avaliação (1 a 5)."
+
+  - name: core_order_items
+    description: "Modelo core que une itens do pedido com produtos e vendedores."
+    columns:
+      - name: order_id
+        description: "ID do pedido que originou o item."
+        tests:
+          - not_null
+      - name: product_id
+        description: "ID do produto."
+        tests:
+          - not_null
+      - name: product_category_name
+        description: "Categoria do produto."  
+      - name: seller_id
+        description: "ID do vendedor (chave estrangeira)."
+        tests:
+          - not_null
+      - name: seller_city
+        description: "Cidade do vendedor."  
+      - name: seller_state
+        description: "Estado (UF) do vendedor."  
+      - name: price
+        description: "Preço do item (sem frete)."  
+      - name: freight_value
+        description: "Valor do frete do item."  
+
+  - name: core_customers
+    description: "Modelo core que enriquece dados de clientes com info de geolocalização."
+    columns:
+      - name: customer_id
+        description: "ID do cliente (chave estrangeira)."
+        tests:
+          - not_null
+          - unique
+      - name: customer_unique_id
+        description: "Identificador único do cliente (chave natural)."
+      - name: customer_zip_code_prefix
+        description: "CEP parcial do cliente."
+      - name: customer_city
+        description: "Cidade do cliente."
+      - name: customer_state
+        description: "Estado (UF) do cliente."
+      - name: geolocation_lat
+        description: "Latitude do endereço."
+      - name: geolocation_lng
+        description: "Longitude do endereço."
+
+  - name: core_products
+    description: "Modelo core unindo produtos com categorias traduzidas."
+    columns:
+      - name: product_id
+        description: "ID único do produto."
+        tests:
+          - not_null
+          - unique
+      - name: product_category_name
+        description: "Categoria do produto (em português)."
+      - name: product_category_name_english
+        description: "Categoria do produto em inglês."
+      - name: product_weight_g
+        description: "Peso do produto em gramas."
+      - name: product_length_cm
+        description: "Comprimento do produto em cm."
+      - name: product_height_cm
+        description: "Altura do produto em cm."
+      - name: product_width_cm
+        description: "Largura do produto em cm."
