@@ -275,4 +275,3 @@ No DBT, podemos organizar a **camada staging** e **camada core** separando-as po
 ## Observações Finais
 
 Seguindo esta **linha do tempo**, os alunos terão um pipeline do zero ao deploy em dois ambientes (dev e prod), aprendendo testes, documentação e práticas de versionamento. Ao final, estarão prontos para aprofundar em macros, snapshots e integrações de CI/CD.
-
