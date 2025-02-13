@@ -14,9 +14,6 @@ Este roteiro apresenta uma **linha do tempo** clara, para que o aluno acompanhe 
 6. **Modelagem Staging**
 7. **Modelagem Core**
 8. **Testes e Documentação**
-9. **Boas Práticas de Git**
-10. **Disponibilização dos Dados** (BI, relatórios, etc.)
-11. **Exercício Prático e Encerramento**
 
 A seguir, cada passo detalhado.
 
@@ -24,7 +21,7 @@ A seguir, cada passo detalhado.
 
 ## 1. Instalação do Ambiente (Windows + VS Code)
 
-1. **Instalar Python** (>= 3.10 recomendado). Ao instalar, selecione "Add Python to PATH".
+1. **Instalar Python** [Baixar o Python 3.11](https://www.python.org/downloads/release/python-31111/).
 2. **Verificar** no terminal:
    ```bash
    python --version
@@ -32,9 +29,13 @@ A seguir, cada passo detalhado.
 3. **Instalar VS Code** em [code.visualstudio.com/download](https://code.visualstudio.com/download).
 4. (Opcional) **Criar ambiente virtual** e ativar:
    ```bash
-   python -m venv dbt .\dbt\Scripts\activate
+   python -m venv dbt
+    ```
+
+   ```bash
+   .\dbt\Scripts\activate
    ```
-5. **Instalar extensões** no VS Code: Python, Git Lens (opcional).
+5. **Configurar o python no vscode** ctrl + shift + p
 
 ---
 
@@ -106,10 +107,19 @@ dbt_olist:
 
 - No **`dbt_project.yml`**:
   ```yaml
-  name: "dbt_olist"
-  profile: "dbt_olist"
-  config-version: 2
-  # etc.
+models:
+  dbt_olist:
+    staging/olist:
+      +materialized: view
+      +schema: stg
+    core:
+      +materialized: table
+      +schema: core
+
+seeds:
+  dbt_olist:
+    +schema: raw
+    +materialized: seed
   ```
 - Agora é possível rodar:
   ```bash
@@ -119,9 +129,10 @@ dbt_olist:
 
 ### Ajuste de Schemas
 
-No DBT, podemos organizar a **camada staging** e **camada core** separando-as por schemas. Com DuckDB, vamos usar `schema: "dev"` ou `schema: "prod"` para separar ambientes. Caso queira
-**diferentes schemas** dentro do mesmo ambiente, você pode definir as configs no `dbt_project.yml`, mas normalmente cada ambiente (dev/prod) já carrega seu schema.
-
+No DBT, no dbt_profile.yml eu tenho como setar um complemento para o nome do schema assim como coloquei acima, sendo assim:
+- seed fica: dev_raw
+- staging fica: dev_stg
+- core fica: dev_core
 ---
 
 ## 5. Importação de Dados (Seeds)
@@ -223,16 +234,7 @@ No DBT, podemos organizar a **camada staging** e **camada core** separando-as po
 
 ---
 
-## 9. Boas Práticas de Git
-
-- **Branches**: crie branches para novas features.
-- **Commits**: mensagens curtas e descritivas.
-- **Pull Requests**: revise mudanças em cada branch.
-- **Merge**: após aprovação, junte na branch principal.
-
----
-
-## 10. Disponibilização dos Dados
+## 9. Disponibilização dos Dados
 
 - **Objetivo**: Consumir dados transformados.
 
@@ -242,36 +244,9 @@ No DBT, podemos organizar a **camada staging** e **camada core** separando-as po
 
 ---
 
-## 11. Exercício Prático e Encerramento
-
-1.
-   ## **Exemplo de roteiro**:
-   1. Baixar CSV + seeds
-   -
-     2. Criar staging e core
-   -
-     3. Adicionar testes e docs
-   -
-     4. Rodar em `--target dev`
-   -
-     5. Revisar no DuckDB
-   -
-     6. Subir para Git e abrir PR
-2. **Encerramento**:
-   - Alinhar próximos passos: macros, exposures, snapshots.
-   - Tirar dúvidas.
-
----
-
 ## Referências e Materiais de Apoio
 
 - **Slides/PPT** da primeira aula: [Apresentação DBT (Aula 1)](https://docs.google.com/presentation/d/11oPh8UV6h-EJP8B92Vik3XO5rih4h82i2OZmVNzu9-o/edit?usp=sharing)
 - **Documentação oficial DBT**: [https://docs.getdbt.com](https://docs.getdbt.com)
 - **Kaggle: Olist Dataset**: [Link](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 - **Documentação dbt-duckdb**: [https://github.com/getdbt/dbt-duckdb](https://github.com/getdbt/dbt-duckdb)
-
----
-
-## Observações Finais
-
-Seguindo esta **linha do tempo**, os alunos terão um pipeline do zero ao deploy em dois ambientes (dev e prod), aprendendo testes, documentação e práticas de versionamento. Ao final, estarão prontos para aprofundar em macros, snapshots e integrações de CI/CD.
