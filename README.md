@@ -106,7 +106,7 @@ dbt_olist:
 ```
 
 - No **`dbt_project.yml`**:
-  ```yaml
+```yaml
 models:
   dbt_olist:
     staging/olist:
@@ -120,7 +120,9 @@ seeds:
   dbt_olist:
     +schema: raw
     +materialized: seed
-  ```
+```
+
+
 - Agora é possível rodar:
   ```bash
   dbt run --target dev   # Usa duckdb_olist_dev.db e schema dev
