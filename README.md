@@ -7,7 +7,7 @@ Este roteiro apresenta uma **linha do tempo** clara, para que o aluno acompanhe 
 ## Linha do Tempo
 
 1. **Instalação do Ambiente** (Python, VS Code)
-2. **Instalação do DBT CLI e DuckDB**
+2. **Instalação do DBT e DuckDB CLI**
 3. **Criação do Projeto (dbt init)**
 4. **Configuração de 2 Bancos (Dev e Prod)**
 5. **Importação de Dados (Seeds)**
@@ -31,28 +31,31 @@ A seguir, cada passo detalhado.
    ```bash
    python -m venv dbt
     ```
-
+No Windows:
    ```bash
    .\dbt\Scripts\activate
    ```
+No MAC:
+   ```bash
+   cd ~/dbt
+   source bin/activate dbt
+   ```
+
 5. **Configurar o python no vscode** ctrl + shift + p
+Validar se a versão do python que você está usando é a setada no VSCode
 
 ---
 
 ## 2. Instalação do DBT CLI e DuckDB
 
 1. **DBT CLI**:
-   - Baixe o pacote pré-compilado ou instale via pip:
+   - Baixe os pacotes pré-compilados ou instale via pip:
      ```bash
-     pip install dbt-core
+     pip install dbt-core duckdb dbt-duckdb
      ```
-2. **DuckDB**:
-   - Instale a biblioteca Python:
-     ```bash
-     pip install duckdb dbt-duckdb
-     ```
-   - (Opcional) Instale o **CLI** do DuckDB, por exemplo via `winget install duckdb`.
-3. **Verificar instalação**:
+   - (Opcional) Instale o **CLI** do DuckDB, por exemplo via no wndows `winget install duckdb` no MAC `brew install duckdb`.
+   - 
+2. **Verificar instalação**:
    ```bash
    dbt --version
    ```
@@ -65,30 +68,30 @@ A seguir, cada passo detalhado.
 
 ---
 
-## 3. Criação do Projeto (dbt init)
+## 3. Criação repositório no Git e Projeto (dbt init)
 
-1. **Repositório Starter**:
-   - Crie uma pasta vazia, inicie um repositório Git se desejar.
-2. **Executar**:
+1. **Repositório no Github**:
+   - Se você não tem crie uma conta no GitHub
+   - Vamos criar um repositório pra esse projeto de nome `dbtrescue`, e clonar ele para vscode.
+  
+2. **Criando o projeto dbt_olist**:
+   Estando no diretorio do repositório crie o projeto dbt com o comando abaixo:
    ```bash
    dbt init dbt_olist
    ```
    - Isso gerará a subpasta `dbt_olist` com `dbt_project.yml`, `models/`, etc.
 3. **Explicar** o `dbt_project.yml`: nome do projeto, versão, profile, etc.
-4. **Commit** inicial (opcional):
-   ```bash
-   git add .
-   git commit -m "Init dbt project"
-   ```
+
+Lembre se salvar tudo e fazer um commit e um push tanto local como online pra salvar tudo no seu repositorio do Github, lembre de fazer isso periodicamente pra não dar merda.
 
 ---
 
 ## 4. Configuração de 2 Bancos (Dev e Prod) no DuckDB
 
-Vamos configurar o **`profiles.yml`** para ter dois ambientes: **dev** e **prod**. Por exemplo:
+Vamos configurar o **`profiles.yml`** para ter dois ambientes: **dev** e **prod**. Eu substituo o que tem (no nosso caso pois estamos começando do zero) pelo conteúdo abaixo:duck
 
 ```yaml
-# Em C:\Users\<User>\.dbt\profiles.yml (Windows)
+# Em C:\Users\<User>\.dbt\profiles.yml (Windows) no Mac o profiles vai estar no home do usuário num diretorio oculto de nome .dbt
 dbt_olist:
   target: dev  # Ambiente padrão
   outputs:
