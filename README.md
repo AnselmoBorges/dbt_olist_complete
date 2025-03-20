@@ -44,6 +44,18 @@ No MAC:
 5. **Configurar o python no vscode** ctrl + shift + p
 Validar se a versão do python que você está usando é a setada no VSCode
 
+6. **Crie um repositório no GITHUB**
+Vamos criar um repositório pra servir como nosso projeto final partindo do zero o nome dele será `dbthandson`.
+
+7. **Clone esse repositório aqui**
+Pra ficar o acesso aos arquivos que vamos trabalhar, clone esse repositório também para sua maquina, assim a movimentação dos modelos e csvs ficam mais simples.
+
+8. **Sincronize o repositório `dbthandson` no seu VSCODE**
+No icone de git, do vscode, coloque pra sincronizar conforme o vídeo.
+
+ Videos dessa primeira etapa:
+ DBT - Hands on - Parte 1 - https://youtu.be/4TqyFTXbzIc
+
 ---
 
 ## 2. Instalação do DBT CLI e DuckDB
