@@ -126,7 +126,7 @@ models:
   dbt_olist:
     staging:
       +schema: stg
-      +materialized: view
+      +materialized: table
     core:
       +schema: core
       +materialized: table
