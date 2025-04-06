@@ -124,12 +124,12 @@ dbt_olist:
 ```yaml
 models:
   dbt_olist:
-    staging/olist:
-      +materialized: view
+    staging:
       +schema: stg
+      +materialized: view
     core:
-      +materialized: table
       +schema: core
+      +materialized: table
 
 seeds:
   dbt_olist:
@@ -175,7 +175,7 @@ No DBT, no dbt_profile.yml eu tenho como setar um complemento para o nome do sch
    - `stg_orders.sql`, `stg_customers.sql`, etc.
 2. **Exemplo** (stg\_orders.sql):
    ```sql
-   {{ config(materialized='view') }}
+   {{ config(materialized='table') }}
    SELECT *
    FROM {{ ref('orders') }}
    ```
